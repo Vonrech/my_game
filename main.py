@@ -2,6 +2,8 @@ import pygame
 
 run = True
 
+score = 0
+
 height = 640
 width = 800
 
@@ -33,6 +35,7 @@ walles = pygame.transform.scale(pygame.image.load("image/walls.png"),(25,600))
 brick_s = pygame.transform.scale(pygame.image.load("image/brick_s.png"),(100,25))
 brick_up = pygame.transform.scale(pygame.image.load("image/brick_up.png"),(25,100))
 enemy = pygame.transform.scale(pygame.image.load("image/enemy.png"),(64,64))
+oxygen = pygame.transform.scale(pygame.image.load("image/oxygen.png"),(32,32))
 
 
 #Player Spawn
@@ -45,6 +48,7 @@ start_y = 50
 all_sprites = pygame.sprite.Group()
 walls = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
+items = pygame.sprite.Group()
 
 
 
@@ -96,6 +100,14 @@ enemy_2 = Object(enemy,70,500,2)
 enemies.add(enemy_1,enemy_2)
 all_sprites.add(enemy_1,enemy_2)
 
+# "coins"
+
+oxygen1 = Object(oxygen, 100,200,0)
+oxygen2 = Object(oxygen, 300,500,0)
+oxygen3 = Object(oxygen, 250,400,0)
+items.add(oxygen1,oxygen2,oxygen3)
+all_sprites.add(oxygen1,oxygen2,oxygen3)
+
 
 
 
@@ -137,9 +149,15 @@ while run:
     enemy_1.rect.y += enemy_1.speed
     if len(pygame.sprite.spritecollide(enemy_1, walls, False)) > 0:
         enemy_1.speed *= -1
+    if len(pygame.sprite.spritecollide(enemy_1, items, False)) > 0:
+        enemy_1.speed *= -1
     enemy_2.rect.y += enemy_2.speed
     if len(pygame.sprite.spritecollide(enemy_2, walls, False)) > 0:
         enemy_2.speed *= -1
+    if len(pygame.sprite.spritecollide(enemy_2, items, False)) > 0:
+        enemy_2.speed *= -1
+
+
 
     # enemy collision
 
@@ -148,6 +166,10 @@ while run:
         player.rect.y = start_y 
 
 
+    # coin collision
+
+    if len(pygame.sprite.spritecollide(player, items, True)) > 0:
+        score += 1
 
 
 
