@@ -1,4 +1,6 @@
 import pygame
+import pygame.mixer
+pygame.init()
 
 run = True
 
@@ -21,6 +23,12 @@ class Object(pygame.sprite.Sprite):
 
 window = pygame.display.set_mode((800,600))
 pygame.display.set_caption("Amongus vs Asteroids")
+
+
+# music
+pygame.mixer.music.load("music/bg.mp3")
+pygame.mixer.music.play()
+pygame.mixer.music.set_volume(0.75)
 
 
 #Pictures import
@@ -110,7 +118,9 @@ all_sprites.add(oxygen1,oxygen2,oxygen3)
 
 
 
-
+#text 
+oxygen_font = pygame.font.Font(None, 35)
+oxygen_text = oxygen_font.render("Кислород: 0", True, pygame.Color("light blue"))
 
 
 
@@ -166,14 +176,16 @@ while run:
         player.rect.y = start_y 
 
 
-    # coin collision
 
+    # get points
     if len(pygame.sprite.spritecollide(player, items, True)) > 0:
         score += 1
-
+        oxygen_text = oxygen_font.render(("Кислород: " + str(score)), True, pygame.Color("light blue"))
 
 
     all_sprites.draw(window)
     all_sprites.update()
+
+    window.blit(oxygen_text,(500,0))
     
     pygame.display.update()
