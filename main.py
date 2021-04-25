@@ -1,5 +1,7 @@
 import pygame
 import pygame.mixer
+from tkinter import *
+from tkinter import messagebox as mb
 pygame.init()
 
 run = True
@@ -8,6 +10,9 @@ score = 0
 
 height = 640
 width = 800
+
+# create hide Tk window
+Tk().wm_withdraw()
 
 class Object(pygame.sprite.Sprite):
     def __init__(self, img, x, y, speed):
@@ -181,6 +186,11 @@ while run:
     if len(pygame.sprite.spritecollide(player, items, True)) > 0:
         score += 1
         oxygen_text = oxygen_font.render(("Кислород: " + str(score)), True, pygame.Color("light blue"))
+
+    # end game
+    if score == 3:
+        mb.showinfo("End","You win!")
+        run = False
 
 
     all_sprites.draw(window)
